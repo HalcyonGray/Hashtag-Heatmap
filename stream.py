@@ -28,7 +28,13 @@ def preprocessing(tweet):
     
     # Add here your code to preprocess the tweets and  
     # remove Emoji patterns, emoticons, symbols & pictographs, transport & map symbols, flags (iOS), etc
-       
+    for c, result in enumerate(results, start=1):
+       tweet = result.text
+       tidy_tweet = tweet.strip().encode('ascii', 'ignore')
+
+       if len(tweet) == 0:
+           print('Empty Tweet')
+           continue   
     return tweet
 
 
