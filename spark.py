@@ -28,7 +28,7 @@ def processTweet(tweet):
         rawLocation = tweetData[0]
 
         # (i) Apply Sentiment analysis in "text"
-
+        sentiment = TextBlob(text).sentiment
 	# (ii) Get geolocation (state, country, lat, lon, etc...) from rawLocation
 
         print("\n\n=========================\ntweet: ", tweet)
@@ -37,8 +37,8 @@ def processTweet(tweet):
         # print("lon: ", lon)
         # print("state: ", state)
         # print("country: ", country)
-        # print("Text: ", text)
-        # print("Sentiment: ", sentiment)
+        print("Text: ", text)
+        print("Sentiment: ", sentiment)
 
 
 
