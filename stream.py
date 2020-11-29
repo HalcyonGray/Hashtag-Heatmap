@@ -30,29 +30,15 @@ def preprocessing(tweet):
     
     # Add here your code to preprocess the tweets and  
     # remove Emoji patterns, emoticons, symbols & pictographs, transport & map symbols, flags (iOS), etc
-    
-    # Check characters to see if they are in punctuation
-    nopunc = [char for char in tweet if char not in string.punctuation]
-    # Join the characters again to form the string.
-    nopunc = ''.join(nopunc)
-    # convert text to lower-case
-    nopunc = nopunc.lower()
-    # remove URLs
-    nopunc = re.sub('((www\.[^\s]+)|(https?://[^\s]+)|(http?://[^\s]+))', '', nopunc)
-    nopunc = re.sub(r'http\S+', '', nopunc)
-    # remove usernames
-    nopunc = re.sub('@[^\s]+', '', nopunc)
-    # remove the # in #hashtag
-    nopunc = re.sub(r'#([^\s]+)', r'\1', nopunc)
-    # remove emojis
+
     regrex_pattern = re.compile(pattern = "["
         u"\U0001F600-\U0001F64F"  # emoticons
         u"\U0001F300-\U0001F5FF"  # symbols & pictographs
         u"\U0001F680-\U0001F6FF"  # transport & map symbols
         u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
                            "]+", flags = re.UNICODE)
-    nopunc = regrex_pattern.sub(r'',nopunc)
-    return [word for word in nopunc]
+    noemoji = regrex_pattern.sub(r'',tweet)
+    return [noemoji]
 
 
 
