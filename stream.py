@@ -51,7 +51,7 @@ def preprocessing(tweet):
         u"\U0001F680-\U0001F6FF"  # transport & map symbols
         u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
                            "]+", flags = re.UNICODE)
-    nopuct = regrex_pattern.sub(r'',nopuct)
+    nopunc = regrex_pattern.sub(r'',nopunc)
     return [word for word in nopunc]
 
 
