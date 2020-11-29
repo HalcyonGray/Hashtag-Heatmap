@@ -58,7 +58,7 @@ def processTweet(tweet):
         # (iii) Post the index on ElasticSearch or log your data in some other way (you are always free!!) 
         if lat != None and lon != None and stringsentiment != None:
 	        #dictionary for indexing es
-	        esD = {"latitude":lat,"longitude":lon,"State":state,"Country":country,"Sentiment":stringsentiment}
+	        esD = {"Latitude":lat,"Longitude":lon,"State":state,"Country":country,"Sentiment":stringsentiment}
                 #index
 	        es.index(index = 'tweet-sentiment', doc_type='default', body=esD)
 
