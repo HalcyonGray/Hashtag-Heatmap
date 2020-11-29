@@ -32,7 +32,7 @@ def preprocessing(tweet):
     # remove Emoji patterns, emoticons, symbols & pictographs, transport & map symbols, flags (iOS), etc
     
     # Check characters to see if they are in punctuation
-    nopunc = [char for char in text if char not in string.punctuation]
+    nopunc = [char for char in tweet if char not in string.punctuation]
     # Join the characters again to form the string.
     nopunc = ''.join(nopunc)
     # convert text to lower-case
