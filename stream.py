@@ -38,7 +38,7 @@ def preprocessing(tweet):
         u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
                            "]+", flags = re.UNICODE)
     noemoji = regrex_pattern.sub(r'',tweet)
-    return [noemoji]
+    return noemoji
 
 
 
