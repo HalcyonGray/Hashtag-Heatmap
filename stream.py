@@ -3,7 +3,7 @@ import socket
 import re
 from geopy.geocoders import Nominatim
 import string  
-# import preprocessor
+import preprocessor as p #pip install tweet-preprocessor
 
 
 
@@ -16,6 +16,7 @@ CONSUMER_SECRET = 'khfvAUnTIyOr5oOlyK2hqTm8lkjTrHEZsoffyJMWURYD0boAXj'
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
+
 
 
 hashtag = '#covid19'
@@ -31,13 +32,15 @@ def preprocessing(tweet):
     # Add here your code to preprocess the tweets and  
     # remove Emoji patterns, emoticons, symbols & pictographs, transport & map symbols, flags (iOS), etc
 
-    regrex_pattern = re.compile(pattern = "["
-        u"\U0001F600-\U0001F64F"  # emoticons
-        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-        u"\U0001F680-\U0001F6FF"  # transport & map symbols
-        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
-                           "]+", flags = re.UNICODE)
-    noemoji = regrex_pattern.sub(r'',tweet)
+    noemoji = p.clean(tweet)
+
+    #regrex_pattern = re.compile(pattern = "["
+    #    u"\U0001F600-\U0001F64F"  # emoticons
+    #    u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+    #    u"\U0001F680-\U0001F6FF"  # transport & map symbols
+    #    u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+    #                       "]+", flags = re.UNICODE)
+    #noemoji = regrex_pattern.sub(r'',tweet)
     return noemoji
 
 
