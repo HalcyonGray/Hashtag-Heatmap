@@ -2,7 +2,7 @@ from pyspark import SparkConf, SparkContext
 from pyspark.streaming import StreamingContext
 # from geopy.geocoders import Nominatim
 from textblob import TextBlob
-# from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch
 
 
 
