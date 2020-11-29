@@ -18,7 +18,7 @@ def processTweet(tweet):
     # (i) Sentiment analysis,
     # (ii) Get data corresponding to place where the tweet was generate (using geopy or googlemaps)
     # (iii) Index the data using Elastic Search 
-
+    es=Elasticsearch([{'host':'localhost','port':9200}])
 
     tweetData = tweet.split("::")
 
@@ -43,7 +43,11 @@ def processTweet(tweet):
 
 
         # (iii) Post the index on ElasticSearch or log your data in some other way (you are always free!!) 
-        
+        if lat != None and lon != None and sentiment != None:
+	    #dictionary for indexing es
+	     esD = {"latitude":lat,"longitude":lon,"State":state,"Country":country,"Sentiment":sentiment}
+	     #index
+	     es.index(index = 'tweet-sentiment', doc_type='default', body=esD)
 
 
 
