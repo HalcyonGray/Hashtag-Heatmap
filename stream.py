@@ -44,8 +44,6 @@ def preprocessing(tweet):
     nopunc = re.sub('@[^\s]+', '', nopunc)
     # remove the # in #hashtag
     nopunc = re.sub(r'#([^\s]+)', r'\1', nopunc)
-    # remove repeated characters
-    nopunc = word_tokenize(nopunc)
     # remove emojis
     regrex_pattern = re.compile(pattern = "["
         u"\U0001F600-\U0001F64F"  # emoticons
