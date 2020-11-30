@@ -13,7 +13,7 @@ from elasticsearch import Elasticsearch
 TCP_IP = 'localhost'
 TCP_PORT = 9001
 
-geolocator = Nominatim(user_agent="HashtagHeatMap")
+#geolocator = Nominatim(user_agent="HashtagHeatMap")
 
 
 def processTweet(tweet):
@@ -29,8 +29,13 @@ def processTweet(tweet):
 
     if len(tweetData) > 1:
         
-        text = tweetData[1]
-        rawLocation = tweetData[0]
+        text = tweetData[4]
+        #rawLocation = tweetData[0]
+        lat = tweetData[0]
+        lon = tweetData[1]
+        state = tweetData[2]
+        country = tweetData[3]
+
 
         # (i) Apply Sentiment analysis in "text"
         if float(TextBlob(text).sentiment.polarity) > 0.3:
@@ -50,11 +55,11 @@ def processTweet(tweet):
         #except:  
         #        lat = lon = state = country = None    
         print("\n\n\ntweet: ", tweet)
-        print("Raw location from tweet status: ", rawLocation)
-        #print("lat: ", lat)
-        #print("lon: ", lon)
-        #print("state: ", state)
-        #print("country: ", country)
+        #print("Raw location from tweet status: ", rawLocation)
+        print("lat: ", lat)
+        print("lon: ", lon)
+        print("state: ", state)
+        print("country: ", country)
         print("Text: ", text)
         print("Sentiment: ", stringsentiment)
 
