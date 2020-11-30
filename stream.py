@@ -17,7 +17,7 @@ CONSUMER_SECRET = 'khfvAUnTIyOr5oOlyK2hqTm8lkjTrHEZsoffyJMWURYD0boAXj'
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
 
-
+geolocator = Nominatim(user_agent="HashtagHeatMap")
 
 hashtag = '#covid19'
 
@@ -86,7 +86,19 @@ class MyStreamListener(tweepy.StreamListener):
         location, tweet = getTweet(status)
 
         if (location != None and tweet != None):
-            tweetLocation = location + "::" + tweet+"\n"
+            try:
+                    geolocation = geolocator.geocode(location, addressdetails=True)
+                    lat = geolocation.raw['lat']
+                    lon = geolocation.raw['lon']
+                    if geolocation.raw['address']['state']:
+                        state = geolocation.raw['address']['state']
+                    if geolocation.raw['address']['country']:
+                        country = geolocation.raw['address']['country']
+            except:  
+                    lat = lon = state = country = None
+            #print(str(lat) + "::" + str(lon) + "::" + str(state) + "::" + str(country) + "::" + str(tweet) +"\n")
+            #input() 
+            tweetLocation = str(lat) + "::" + str(lon) + "::" + str(state) + "::" + str(country) + "::" + tweet+"\n"
             print(status.text)
             conn.send(tweetLocation.encode('utf-8'))
 
