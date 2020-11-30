@@ -1,15 +1,19 @@
 from pyspark import SparkConf, SparkContext
 from pyspark.streaming import StreamingContext
+from bs4 import BeautifulSoup
+import re
+from nltk.tokenize import WordPunctTokenizer
+import json
+import pickle
 from geopy.geocoders import Nominatim
 from textblob import TextBlob
 from elasticsearch import Elasticsearch
 
 
-
 TCP_IP = 'localhost'
 TCP_PORT = 9001
 
-geolocator = Nominatim(user_agent="HashtagHeatMap")
+#geolocator = Nominatim(user_agent="HashtagHeatMap")
 
 
 def processTweet(tweet):
@@ -25,8 +29,13 @@ def processTweet(tweet):
 
     if len(tweetData) > 1:
         
-        text = tweetData[1]
-        rawLocation = tweetData[0]
+        text = tweetData[4]
+        #rawLocation = tweetData[0]
+        lat = tweetData[0]
+        lon = tweetData[1]
+        state = tweetData[2]
+        country = tweetData[3]
+
 
         # (i) Apply Sentiment analysis in "text"
         if float(TextBlob(text).sentiment.polarity) > 0.3:
@@ -37,23 +46,22 @@ def processTweet(tweet):
                 stringsentiment = 'Neutral'
         
 	# (ii) Get geolocation (state, country, lat, lon, etc...) from rawLocation
-        try:
-                location = geolocator.geocode(tweetData[0], addressdetails=True)
-                lat = location.raw['lat']
-                lon = location.raw['lon']
-                state = location.raw['address']['state']
-                country = location.raw['address']['country']
-        except:  
-                lat = lon = state = country = None    
-        print("\n\n=========================\ntweet: ", tweet)
-        print("Raw location from tweet status: ", rawLocation) #[lat,lon,lat,lon]
-        #print("lat: ", lat)
-        #print("lon: ", lon)
-        #print("state: ", state)
-        #print("country: ", country)
+        #try:
+        #       location = geolocator.geocode(tweetData[0], addressdetails=True)
+        #        lat = location.raw['lat']
+        #        lon = location.raw['lon']
+        #        state = location.raw['address']['state']
+        #        country = location.raw['address']['country']
+        #except:  
+        #        lat = lon = state = country = None    
+        print("\n\n\ntweet: ", tweet)
+        #print("Raw location from tweet status: ", rawLocation)
+        print("lat: ", lat)
+        print("lon: ", lon)
+        print("state: ", state)
+        print("country: ", country)
         print("Text: ", text)
         print("Sentiment: ", stringsentiment)
-
 
         # (iii) Post the index on ElasticSearch or log your data in some other way (you are always free!!) 
         if lat != None and lon != None and stringsentiment != None:
