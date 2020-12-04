@@ -16,6 +16,7 @@ TCP_PORT = 9001
 #geolocator = Nominatim(user_agent="HashtagHeatMap")
 
 
+
 def processTweet(tweet):
 
     # Here, you should implement:
@@ -29,6 +30,10 @@ def processTweet(tweet):
 
     if len(tweetData) > 1:
         
+
+
+
+
         text = tweetData[4]
         #rawLocation = tweetData[0]
         lat = tweetData[0]
@@ -45,7 +50,7 @@ def processTweet(tweet):
         else:
                 stringsentiment = 'Neutral'
         
-	# (ii) Get geolocation (state, country, lat, lon, etc...) from rawLocation
+        # (ii) Get geolocation (state, country, lat, lon, etc...) from rawLocation
         #try:
         #       location = geolocator.geocode(tweetData[0], addressdetails=True)
         #        lat = location.raw['lat']
@@ -65,10 +70,30 @@ def processTweet(tweet):
 
         # (iii) Post the index on ElasticSearch or log your data in some other way (you are always free!!) 
         if lat != None and lon != None and stringsentiment != None:
-	        #dictionary for indexing es
-	        esD = {"Latitude":lat,"Longitude":lon,"State":state,"Country":country,"Sentiment":stringsentiment}
+                #dictionary for indexing es
+                #es.indices.create(index='test-index', body=mappings, ignore=400)	
+                settings = {
+                        "mappings": {
+                                "properties": {
+                                        "geo": {
+                                                "properties": {
+                                                        "location": {
+                                                                "type": "geo_point"
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                }
+                es.indices.create(index='twittersentiment', body=settings, ignore = 400)
+                try:
+                        esD = {"lat":lat,"lon":lon,"state":state,"country":country,"Sentiment":stringsentiment, "location":{"lat": float(lat),"lon":float(lon)} }
+                except:
+                        esD = {"lat":lat,"lon":lon,"state":state,"country":country,"Sentiment":stringsentiment}
+                es=Elasticsearch([{'host':'localhost','port':9200}])
+	        
                 #index
-	        es.index(index = 'tweet-sentiment', doc_type='default', body=esD)
+                es.index(index = 'twittersentiment',body=esD)
 
 
 
@@ -87,7 +112,6 @@ ssc.checkpoint("checkpoint_TwitterApp")
 
 # read data from port 900
 dataStream = ssc.socketTextStream(TCP_IP, TCP_PORT)
-
 
 dataStream.foreachRDD(lambda rdd: rdd.foreach(processTweet))
 
