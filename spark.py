@@ -59,41 +59,46 @@ def processTweet(tweet):
         #        country = location.raw['address']['country']
         #except:  
         #        lat = lon = state = country = None    
-        print("\n\n\ntweet: ", tweet)
-        #print("Raw location from tweet status: ", rawLocation)
-        print("lat: ", lat)
-        print("lon: ", lon)
-        print("state: ", state)
-        print("country: ", country)
-        print("Text: ", text)
-        print("Sentiment: ", stringsentiment)
+        try:
+                print("\n\n\ntweet: ", tweet)
+                #print("Raw location from tweet status: ", rawLocation)
+                print("lat: ", lat)
+                print("lon: ", lon)
+                print("state: ", state)
+                print("country: ", country)
+                print("Text: ", text)
+                print("Sentiment: ", stringsentiment)
 
-        # (iii) Post the index on ElasticSearch or log your data in some other way (you are always free!!) 
-        if lat != None and lon != None and stringsentiment != None:
-                #dictionary for indexing es
-                #es.indices.create(index='test-index', body=mappings, ignore=400)	
-                settings = {
-                        "mappings": {
-                                "properties": {
-                                        "geo": {
-                                                "properties": {
-                                                        "location": {
-                                                                "type": "geo_point"
+                # (iii) Post the index on ElasticSearch or log your data in some other way (you are always free!!) 
+                if lat != None and lon != None and stringsentiment != None:
+                        #dictionary for indexing es
+                        #es.indices.create(index='test-index', body=mappings, ignore=400)	
+                        settings = {
+                                "mappings": {
+                                        "properties": {
+                                                "geo": {
+                                                        "properties": {
+                                                                "location": {
+                                                                        "type": "geo_point"
+                                                                }
                                                         }
                                                 }
                                         }
                                 }
                         }
-                }
-                es.indices.create(index='twittersentiment', body=settings, ignore = 400)
-                try:
-                        esD = {"lat":lat,"lon":lon,"state":state,"country":country,"Sentiment":stringsentiment, "location":{"lat": float(lat),"lon":float(lon)} }
-                except:
-                        esD = {"lat":lat,"lon":lon,"state":state,"country":country,"Sentiment":stringsentiment}
-                es=Elasticsearch([{'host':'localhost','port':9200}])
-	        
-                #index
-                es.index(index = 'twittersentiment',body=esD)
+                        es.indices.create(index='test-index', body=settings, ignore = 400)
+                        #es.indices.create(index='twittersentiment', body=settings, ignore = 400)
+                        try:
+                                esD = {"lat":lat,"lon":lon,"state":state,"country":country,"Sentiment":stringsentiment, "location":{"lat": float(lat),"lon":float(lon)} }
+                        except:
+                                esD = {"lat":lat,"lon":lon,"state":state,"country":country,"Sentiment":stringsentiment}
+                        es=Elasticsearch([{'host':'localhost','port':9200}])
+                        
+                        #index
+                        es.index(index = 'test-index',body=esD)
+                        #es.index(index = 'twittersentiment',body=esD)
+        except:
+                print("failed\n")
 
 
 
