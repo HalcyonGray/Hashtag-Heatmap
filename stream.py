@@ -8,10 +8,10 @@ import time
 
 
 # Enter your Twitter keys here!!!
-ACCESS_TOKEN = ''
-ACCESS_SECRET = ''
-CONSUMER_KEY = ''
-CONSUMER_SECRET = ''
+ACCESS_TOKEN = '1326334045257654272-pBJ0hn9XuqBoSbUMhGqGB5cy5Y5sXU'
+ACCESS_SECRET = 'A0nIglWa354klxJlhlCS1HdYrQQT70MvergJh6ZAtrzDK'
+CONSUMER_KEY = 'sykg7JmdnNThS9HwsMJpm0dUE'
+CONSUMER_SECRET = 'khfvAUnTIyOr5oOlyK2hqTm8lkjTrHEZsoffyJMWURYD0boAXj'
 
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
